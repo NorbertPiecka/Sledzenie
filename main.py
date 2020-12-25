@@ -1,0 +1,2 @@
+
+print("Gitowa wersja")
