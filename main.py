@@ -1,4 +1,4 @@
-import wmi
+import time
 import win32gui as win32
 import pandas as pd
 from pywinauto import Desktop
@@ -6,31 +6,45 @@ from pywinauto import Desktop
 # Czytanie z pliku csv będącego templatką dla danych w programie
 df = pd.read_csv('temp.csv')
 
-# Inicjalnizacja stringa ktory uzyty do zamienienia tablicy nazw procesow w jednego stringa
-process_string = " "
-
-# Zmienna windows przechowuje wszytskie otawrte okna w systemie -> windows jest lista
-windows = Desktop(backend="uia").windows()
-
-# Zamiana listy windows na jednego stringa
-process_string = process_string.join( w.window_text() for w in windows)
-
-# Okno na którym aktualnie skupiony jest kursor
-w = win32.GetWindowText(win32.GetForegroundWindow())
-
 # Funckja sprawdzająca czy dane słowo zawiera sie w stringu -> w przypadku programu czy nazwa procesu zawiera sie na liscie
 def containsWord(s, w):
     return f' {w} ' in f' {s} '
 
+# Deklaracja zmiennych używanych w dalszej cześći programu
+processString = ""
+windows = Desktop(backend="uia").windows()
+windowFore = win32.GetWindowText(win32.GetForegroundWindow())
+prevForeWindow = windowFore
+processString = processString.join(w.window_text() for w in windows)
+timea = time.time()
+totalTime = 0
 
-# Dodawania czasu do aktywności okna jeśli jest otwarte oraz dodawanie czasu używania tego okna jeśli kursor jest na nim skupiony
+# Przy starcie
 for index, row in df.iterrows():
-    if(containsWord(process_string,row['Name'])):
-        df.at[index,'Time Active'] += 2
-        if(containsWord(w,row['Name'])):
-            df.at[index,'Time Focused'] += 2
+    if(containsWord(processString,row['Name'])):
+        df.at[index,'Time Active'] += 1
+        if(containsWord(windowFore,row['Name'])):
+            df.at[index,'Time Focused'] += 1
 
+# Reszta programu
+while (True):
+    windowFore = win32.GetWindowText(win32.GetForegroundWindow())
+    if (windowFore != prevForeWindow):
+        windows = Desktop(backend="uia").windows()
+        processString = processString.join(w.window_text()+" " for w in windows)
+        timeDif = int(time.time() - timea)
+        print("Czas zmiany" + str(timeDif))
+        totalTime += timeDif
+        for index, row in df.iterrows():
+            if(containsWord(processString,row['Name'])):
+                df.at[index,'Time Active'] += (timeDif + 1)
+                if(containsWord(windowFore,row['Name'])):
+                    df.at[index,'Time Active'] += (timeDif + 1)
 
-print(df)
+        timea = time.time()
+        prevForeWindow = windowFore
+        processString = ""
+        df.to_csv('out.csv', index=False)
 
+    time.sleep(1)
 
