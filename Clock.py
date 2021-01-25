@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QWidget, QLabel
 from time import sleep
+from PyQt5.Qt import Qt
 
 class Clock(QLabel):
     running = True;
@@ -7,6 +8,10 @@ class Clock(QLabel):
     def __init__(self,*args,**kwargs):
         super(Clock, self).__init__(*args,**kwargs)
         self.setText("00:00:00")
+        self.setAlignment(Qt.AlignCenter)
+        font = self.font()
+        font.setPointSize(50)
+        self.setFont(font)
 
     def startClock(self):
         time = 0
@@ -37,8 +42,6 @@ class Clock(QLabel):
             else:
                 strTime += str(sec)
 
-            if self is None:
-                return False
 
             self.setText(strTime)
             time += 1

@@ -1,6 +1,8 @@
 import sys
-from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QApplication, QHBoxLayout
 
+from PyQt5.QtGui import QFont
+from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QApplication, QHBoxLayout
+from time import sleep
 
 class Active(QVBoxLayout):
     app = QApplication(sys.argv)
@@ -12,8 +14,13 @@ class Active(QVBoxLayout):
         super(Active, self).__init__(*args,**kwargs)
         i=0
         Hl1 = QHBoxLayout()
-        self.addWidget(QLabel("Time Active"))
+        self.font = QFont("Time New Roman", 14)
+        activity = QLabel("Time Active")
+        activity.setFont(self.font)
+        self.addWidget(activity)
         for lab in self.labels:
+            lab.setFont(self.font)
+            self.time[i].setFont(self.font)
             lab.setText(list[i])
             self.time[i].setText(time[i])
             Hl1.addWidget(self.numberlabels[i])
@@ -22,17 +29,20 @@ class Active(QVBoxLayout):
             self.addLayout(Hl1)
             Hl1 = QHBoxLayout()
             i += 1
+        for lab in self.numberlabels:
+            lab.setFont(self.font)
 
 
-
-    def updateContent(self,name,time):
-
-        i=0
+    def updateName(self,name):
+        i = 0
         for lab in self.labels:
             lab.setText(name[i])
             i += 1
+            sleep(0.4)
 
-        i=0
+    def updateTime(self,time):
+        i = 0
         for t in self.time:
             t.setText(time[i])
             i += 1
+            sleep(0.4)
