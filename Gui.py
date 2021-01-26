@@ -11,7 +11,6 @@ from Clock import Clock
 from PieChart import PieChart
 from Spy import Spy
 from time import sleep
-import pandas as pd
 import threading
 
 

@@ -12,7 +12,6 @@ from matplotlib import pyplot as plt
 class Spy:
     # Czytanie z pliku csv będącego templatką dla danych w programie
     processString = ""
-    win = Desktop(backend="uia")
     windows = Desktop(backend="uia").windows()
     windowFore = win32.GetWindowText(win32.GetForegroundWindow())
     prevForeWindow = windowFore
