@@ -18,7 +18,8 @@ class Spy:
     prevForeWindow = windowFore
     processString = processString.join(w.window_text() + " " for w in windows)
     timea = time.time()
-    totalTime = 0
+    totalTime = 1
+    totalTimeDif = 1
     min = 0
     saveTime = 20
 
@@ -45,6 +46,7 @@ class Spy:
                 self.processString = self.processString.join(w.window_text() + " " for w in windows)
                 self.processString += self.prevForeWindow
                 timeDif = int(time.time() - self.timea)
+                self.totalTimeDif += timeDif
                 for index, row in self.df.iterrows():
                     if (containsWord(self.processString, row['Name'])):
                         self.df.at[index, 'Time Active'] += timeDif
@@ -57,7 +59,7 @@ class Spy:
                 self.processString = ""
 
             if((int(self.totalTime/self.saveTime)) > self.min):
-                self.df.at[0,'Total'] = self.totalTime
+                self.df.at[0,'Total'] = self.totalTimeDif
                 self.df.to_csv('out.csv', index=False)
                 thread = threading.Thread(target=dataParse, args=(self.main,self.totalTime))
                 thread.start()

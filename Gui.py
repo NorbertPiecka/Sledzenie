@@ -21,7 +21,7 @@ class MainWindow(QMainWindow):
     activeName = ['-','-','-','-','-']
     activeTime = ['00:00:00', '00:00:00', '00:00:00', '00:00:00', '00:00:00']
     layout = QVBoxLayout()
-    fileToRead = 'temp.csv'
+    fileToRead = 'out.csv'
     running = True
 
     def __init__(self,*args,**kwargs):
@@ -80,4 +80,4 @@ if __name__ == "__main__":
     window.show()
     spyThread = threading.Thread(target=window.initSpy, args=())
     spyThread.start()
-    sys.exit(app.exec_())
+    app.exec_()
