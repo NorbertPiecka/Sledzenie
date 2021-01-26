@@ -21,7 +21,7 @@ class MainWindow(QMainWindow):
     activeName = ['-','-','-','-','-']
     activeTime = ['00:00:00', '00:00:00', '00:00:00', '00:00:00', '00:00:00']
     layout = QVBoxLayout()
-    fileToRead = 'out.csv'
+    fileToRead = 'temp.csv'
     running = True
 
     def __init__(self,*args,**kwargs):

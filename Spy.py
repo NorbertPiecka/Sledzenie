@@ -65,9 +65,8 @@ class Spy:
                 thread.start()
                 self.saveTime = 60
                 self.min = self.totalTime/self.saveTime
-
-            time.sleep(1)
             self.main.clock.setClock(convertTime(self.totalTime))
+            time.sleep(1)
             self.totalTime += 1
 
         self.df.at[0, 'Total'] = self.totalTime
