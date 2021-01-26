@@ -12,6 +12,7 @@ class PieChart(QLabel):
         pixmap = QPixmap(self.chartImage)
         pixmap = pixmap.scaled(500,500,Qt.KeepAspectRatio)
         self.setPixmap(pixmap)
+        self.setAlignment(Qt.AlignCenter)
 
 
     def chartUpdate(self,path):

@@ -16,13 +16,22 @@ class Focus(QVBoxLayout):
         super(Focus, self).__init__(*args,**kwargs)
         i=0
         self.font = QFont("Time New Roman", 14)
+        self.lfont = QFont("Time New Roman", 22)
         Hl1 = QHBoxLayout()
         focus = QLabel("Time Focused")
-        focus.setFont(self.font)
+        focus.setAlignment(Qt.AlignCenter)
+        focus.setStyleSheet("background-color: #DC7633 ;border: 1px solid black;border-radius: 10px;")
+        focus.setFont(self.lfont)
+        style = "color: black; background-color: #F5CBA7 ;border: 1px solid #C0392B;border-radius: 10px;"
         self.addWidget(focus)
         for lab in self.labels:
             lab.setFont(self.font)
+            # lab.setStyleSheet("background-color: #BFB8B6;border: 1px solid black;border-radius: 10px;")
+            lab.setStyleSheet(style)
+            lab.setAlignment(Qt.AlignCenter)
             self.time[i].setFont(self.font)
+            self.time[i].setStyleSheet(style)
+            self.time[i].setAlignment(Qt.AlignCenter)
             lab.setText(list[i])
             self.time[i].setText(time[i])
             Hl1.addWidget(self.numberlabels[i])
@@ -33,6 +42,8 @@ class Focus(QVBoxLayout):
             i += 1
         for lab in self.numberlabels:
             lab.setFont(self.font)
+            lab.setAlignment(Qt.AlignCenter)
+            lab.setStyleSheet(style)
 
 
     def updateName(self,name):

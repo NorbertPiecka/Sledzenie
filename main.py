@@ -15,7 +15,7 @@ processString = ""
 windows = Desktop(backend="uia").windows()
 windowFore = win32.GetWindowText(win32.GetForegroundWindow())
 prevForeWindow = windowFore
-processString = processString.join(w.window_text() for w in windows)
+processString = processString.join(w.window_text()+ " " for w in windows)
 timea = time.time()
 totalTime = 0
 
@@ -26,25 +26,27 @@ for index, row in df.iterrows():
         if(containsWord(windowFore,row['Name'])):
             df.at[index,'Time Focused'] += 1
 
+processString = " "
 # Reszta programu
 while (True):
     windowFore = win32.GetWindowText(win32.GetForegroundWindow())
     if (windowFore != prevForeWindow):
         windows = Desktop(backend="uia").windows()
         processString = processString.join(w.window_text()+" " for w in windows)
+        processString += prevForeWindow
         timeDif = int(time.time() - timea)
-        print("Czas zmiany" + str(timeDif))
         totalTime += timeDif
         for index, row in df.iterrows():
             if(containsWord(processString,row['Name'])):
-                df.at[index,'Time Active'] += (timeDif + 1)
-                if(containsWord(windowFore,row['Name'])):
-                    df.at[index,'Time Active'] += (timeDif + 1)
+                df.at[index,'Time Active'] += timeDif
+                if(containsWord(prevForeWindow,row['Name'])):
+                    df.at[index,'Time Focused'] += timeDif
 
         timea = time.time()
         prevForeWindow = windowFore
         processString = ""
-        df.to_csv('out.csv', index=False)
+        print(df)
+        # df.to_csv('out.csv', index=False)
 
     time.sleep(1)
 

@@ -1,22 +1,22 @@
-﻿Name,Time Active,Time Focused
-Google Chrome,0,0
-YouTube,0,0
-Netflix,0,0
-Word,0,0
-Excel,0,0
-Spotify,0,0
-Stack Overflow,0,0
-Power Point,0,0
-IntelliJ IDEA,0,0
-Microsoft Teams,0,0
-YouTube Music,0,0
-Outlook,0,0
-Tidal,0,0
-Microsoft Visual Studio,0,0
-Visual Studio Code,0,0
-Google Docs,0,0
-Google Keep,0,0
-Google Sheets,0,0
-Facebook,0,0
-Messenger,0,0
-Other,0,0
+﻿Name,Time Active,Time Focused,Total
+Google Chrome,0,0,0
+YouTube,0,0,
+Netflix,0,0,
+Word,0,0,
+Excel,0,0,
+Spotify,0,0,
+Stack Overflow,0,0,
+Power Point,0,0,
+IntelliJ IDEA,0,0,
+Microsoft Teams,0,0,
+YouTube Music,0,0,
+Outlook,0,0,
+Tidal,0,0,
+Microsoft Visual Studio,0,0,
+Visual Studio Code,0,0,
+Google Docs,0,0,
+Google Keep,0,0,
+Google Sheets,0,0,
+Facebook,0,0,
+Messenger,0,0,
+Other,0,0,

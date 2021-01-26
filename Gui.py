@@ -5,6 +5,7 @@ warnings.simplefilter("ignore", UserWarning)
 sys.coinit_flags = 2
 from pywinauto import Desktop
 from PyQt5.QtWidgets import QMainWindow,QHBoxLayout,QApplication,QWidget,QVBoxLayout,QPushButton
+from PyQt5.QtCore import Qt
 from Focuse import Focus
 from Active import Active
 from Clock import Clock
@@ -26,7 +27,10 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__(*args,**kwargs)
         self.setWindowTitle("Self Spy")
         self.spy = 0
-        self.resize(900,700)
+        self.setWindowFlag(Qt.WindowTitleHint)
+        self.resize(1000,900)
+        # self.setStyleSheet("background-color: #CCD1D1;")
+        self.setStyleSheet("background-color: #F0DFF7;")
 
         self.highGroundLayout = QHBoxLayout()
 

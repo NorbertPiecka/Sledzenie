@@ -12,6 +12,7 @@ class Clock(QLabel):
         font = self.font()
         font.setPointSize(50)
         self.setFont(font)
+        self.setStyleSheet("background-color: #CADAC4  ;border: 1px solid black;border-radius: 10px;")
 
     def startClock(self):
         time = 0

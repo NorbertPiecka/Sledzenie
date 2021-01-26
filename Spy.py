@@ -13,7 +13,7 @@ class Spy:
     windows = Desktop(backend="uia").windows()
     windowFore = win32.GetWindowText(win32.GetForegroundWindow())
     prevForeWindow = windowFore
-    processString = processString.join(w.window_text() for w in windows)
+    processString = processString.join(w.window_text() + " " for w in windows)
     timea = time.time()
     totalTime = 0
     min = 0
@@ -21,6 +21,7 @@ class Spy:
 
     def __init__(self,window,*args,**kwargs):
         super(Spy, self).__init__(*args,**kwargs)
+        self.totalTime = self.df.at[0,'Total']
         self.main = window
         self.startSpying()
 
@@ -38,6 +39,7 @@ class Spy:
             if (self.windowFore != self.prevForeWindow or int(self.totalTime/self.saveTime) > self.min):
                 windows = Desktop(backend="uia").windows()
                 self.processString = self.processString.join(w.window_text() + " " for w in windows)
+                self.processString += self.prevForeWindow
                 timeDif = int(time.time() - self.timea)
                 for index, row in self.df.iterrows():
                     if (containsWord(self.processString, row['Name'])):
@@ -52,6 +54,7 @@ class Spy:
                 self.processString = ""
 
             if((int(self.totalTime/self.saveTime)) > self.min):
+                self.df.at[0,'Total'] = self.totalTime
                 self.df.to_csv('out.csv', index=False)
                 thread = threading.Thread(target=dataParse, args=(self.main,self.totalTime))
                 thread.start()
@@ -60,6 +63,9 @@ class Spy:
 
             time.sleep(1)
             self.totalTime += 1
+
+        self.df.at[0, 'Total'] = self.totalTime
+        self.df.to_csv('out.csv', index=False)
 
 
 # Funckja sprawdzająca czy dane słowo zawiera sie w stringu -> w przypadku programu czy nazwa procesu zawiera sie na liscie
