@@ -1,4 +1,8 @@
 import threading
+import sys
+import warnings
+warnings.simplefilter("ignore", UserWarning)
+sys.coinit_flags = 0
 import time
 import win32gui as win32
 import pandas as pd
@@ -7,7 +11,6 @@ from matplotlib import pyplot as plt
 
 class Spy:
     # Czytanie z pliku csv będącego templatką dla danych w programie
-    df = pd.read_csv('temp.csv')
     processString = ""
     win = Desktop(backend="uia")
     windows = Desktop(backend="uia").windows()
@@ -21,8 +24,9 @@ class Spy:
 
     def __init__(self,window,*args,**kwargs):
         super(Spy, self).__init__(*args,**kwargs)
-        self.totalTime = self.df.at[0,'Total']
         self.main = window
+        self.df = pd.read_csv(self.main.fileToRead)
+        self.totalTime = int(self.df.at[0, 'Total'])
         self.startSpying()
 
     # Przy starcie
@@ -34,7 +38,7 @@ class Spy:
                 if (containsWord(self.windowFore, row['Name'])):
                     self.df.at[index, 'Time Focused'] += 1
 
-        while (self.main.clock.running):
+        while (self.main.running):
             self.windowFore = win32.GetWindowText(win32.GetForegroundWindow())
             if (self.windowFore != self.prevForeWindow or int(self.totalTime/self.saveTime) > self.min):
                 windows = Desktop(backend="uia").windows()
@@ -46,7 +50,6 @@ class Spy:
                         self.df.at[index, 'Time Active'] += timeDif
                         if (containsWord(self.prevForeWindow, row['Name'])):
                             self.df.at[index, 'Time Focused'] += timeDif
-                            print("i added " + str(timeDif))
 
 
                 self.timea = time.time()
@@ -62,6 +65,7 @@ class Spy:
                 self.min = self.totalTime/self.saveTime
 
             time.sleep(1)
+            self.main.clock.setClock(convertTime(self.totalTime))
             self.totalTime += 1
 
         self.df.at[0, 'Total'] = self.totalTime
@@ -113,10 +117,16 @@ def dataParse(window,time):
         sum += t
         topFocusTime.append(convertTime(t))
 
+    for i in range(0,4):
+        if(topFocusName[i] in ['Messenger','Facebook','YouTube','Stack Overflowe','YouTube Music']):
+            sum -= temp[i]
+
+    print(sum)
     diagramLabel = topFocusName
     diagramLabel.append("Other")
     diagramValue = temp
     if((totalTime - sum)<0):
+        print("Value of: " + str(totalTime - sum))
         diagramValue.append(0)
     else:
         diagramValue.append(totalTime - sum)

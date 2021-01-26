@@ -1,5 +1,4 @@
 import sys
-import threading
 import warnings
 warnings.simplefilter("ignore", UserWarning)
 sys.coinit_flags = 2
@@ -12,7 +11,7 @@ from Clock import Clock
 from PieChart import PieChart
 from Spy import Spy
 from time import sleep
-import sys
+import pandas as pd
 import threading
 
 
@@ -22,6 +21,8 @@ class MainWindow(QMainWindow):
     activeName = ['-','-','-','-','-']
     activeTime = ['00:00:00', '00:00:00', '00:00:00', '00:00:00', '00:00:00']
     layout = QVBoxLayout()
+    fileToRead = 'temp.csv'
+    running = True
 
     def __init__(self,*args,**kwargs):
         super(MainWindow, self).__init__(*args,**kwargs)
@@ -29,7 +30,6 @@ class MainWindow(QMainWindow):
         self.spy = 0
         self.setWindowFlag(Qt.WindowTitleHint)
         self.resize(1000,900)
-        # self.setStyleSheet("background-color: #CCD1D1;")
         self.setStyleSheet("background-color: #F0DFF7;")
 
         self.highGroundLayout = QHBoxLayout()
@@ -55,10 +55,9 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(widget)
 
     def closeEvent(self, event):
-        self.clock.running = False
+        self.running = False
 
     def initSpy(self):
-        print("I started")
         self.spy = Spy(self)
 
     def updateWindow(self,focusName,focusTime,activeName,activeTime,focusPath):
@@ -79,8 +78,6 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = MainWindow()
     window.show()
-    clockThread = threading.Thread(target=window.clock.startClock, args=())
     spyThread = threading.Thread(target=window.initSpy, args=())
-    clockThread.start()
     spyThread.start()
     sys.exit(app.exec_())

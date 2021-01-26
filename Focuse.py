@@ -26,7 +26,6 @@ class Focus(QVBoxLayout):
         self.addWidget(focus)
         for lab in self.labels:
             lab.setFont(self.font)
-            # lab.setStyleSheet("background-color: #BFB8B6;border: 1px solid black;border-radius: 10px;")
             lab.setStyleSheet(style)
             lab.setAlignment(Qt.AlignCenter)
             self.time[i].setFont(self.font)
